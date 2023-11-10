@@ -24,6 +24,7 @@ public class Cart {
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
     }
+
     @Override
     public String toString() {
         return "Cart{" +

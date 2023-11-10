@@ -1,5 +1,6 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
+import com.laba.solvd.HW_ShoppingMallApp.exceptions.InsufficientStockException;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.InventoryManagement;
 
 import java.util.HashMap;
@@ -50,20 +51,16 @@ public class Inventory implements InventoryManagement {
     }
 
     // A method to remove a product from the inventory (with overload for different quantities)
-    public void removeProduct(Product product) {
+    public void removeProduct(Product product) throws InsufficientStockException {
         removeProduct(product, 1); // Remove a single unit by default
     }
 
-    public void removeProduct(Product product, int quantity) {
-        int currentQuantity = productStock.getOrDefault(product, 0);
-        int newQuantity = currentQuantity - quantity;
-
-        if (newQuantity > 0) {
-            productStock.put(product, newQuantity);
-        } else {
-            productStock.remove(product);
+    public void removeProduct(Product product, int quantity) throws InsufficientStockException {
+        int currentStock = productStock.getOrDefault(product, 0);
+        if (quantity > currentStock) {
+            throw new InsufficientStockException("Insufficient stock for product: " + product.getName());
         }
-        lastStockUpdate = LocalDate.now(); // Update the stock update date
+        productStock.put(product, currentStock - quantity);
     }
 
     // Getters and Setters
