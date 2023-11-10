@@ -9,7 +9,8 @@ import java.util.Objects;
 
 public class Receipt {
     private static int receiptCounter = 0;
-
+    // Final variable
+    private final String receiptType = "Standard";
     private int receiptNumber;
     private LocalDate issueDate;
     private List<CartItem> itemsPurchased;
@@ -23,6 +24,30 @@ public class Receipt {
         this.itemsPurchased = itemsPurchased;
         this.totalAmount = totalAmount;
         this.paymentMethod = String.valueOf(paymentMethod);
+    }
+
+    // Static method to access the static counter variable
+    public static int getNextReceiptNumber() {
+        return receiptCounter + 1;
+    }
+
+    // Final method to print the receipt details
+    public final void finalPrintReceipt() {
+        receiptNumber();
+    }
+
+    private void receiptNumber() {
+        System.out.println("Receipt Number: " + receiptNumber);
+        System.out.println("Issue Date: " + issueDate);
+        System.out.println("Items Purchased:");
+        for (CartItem item : itemsPurchased) {
+            Product product = item.getProduct();
+            if (product != null) {
+                System.out.println("Product ID: " + product.getName() + ", Product Name: " + product.getName() + ", Unit Price: " + product.getPrice() + ", Quantity: " + item.getQuantity() + ", Total: " + (product.getPrice() * item.getQuantity()));
+            }
+        }
+        System.out.println("Total Amount: " + totalAmount);
+        System.out.println("Payment Method: " + paymentMethod);
     }
 
     // Getter and setter methods
@@ -58,24 +83,9 @@ public class Receipt {
         this.paymentMethod = paymentMethod;
     }
 
-    // Static method to access the static counter variable
-    public static int getNextReceiptNumber() {
-        return receiptCounter + 1;
-    }
-
     // Method to print the receipt details
     public void printReceipt() {
-        System.out.println("Receipt Number: " + receiptNumber);
-        System.out.println("Issue Date: " + issueDate);
-        System.out.println("Items Purchased:");
-        for (CartItem item : itemsPurchased) {
-            Product product = item.getProduct();
-            if (product != null) {
-                System.out.println("Product ID: " + product.getName() + ", Product Name: " + product.getName() + ", Unit Price: " + product.getPrice() + ", Quantity: " + item.getQuantity() + ", Total: " + (product.getPrice() * item.getQuantity()));
-            }
-        }
-        System.out.println("Total Amount: " + totalAmount);
-        System.out.println("Payment Method: " + paymentMethod);
+        receiptNumber();
     }
 
     @Override

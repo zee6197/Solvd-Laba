@@ -4,12 +4,33 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class ShoppingMall {
+
+    private static int numberOfMalls;
     private String name;
     private LocalDate establishedDate;
 
     public ShoppingMall(String name, LocalDate date) {
         this.name = name;
         this.establishedDate = date;
+    }
+
+    public ShoppingMall(String name) {
+        this.name = name;
+        incrementMallCount();
+    }
+
+    // Static initialization block
+    static {
+        // Initial count of malls
+        numberOfMalls = 0;
+    }
+
+    private static void incrementMallCount() {
+        numberOfMalls++;
+    }
+
+    public static int getNumberOfMalls() {
+        return numberOfMalls;
     }
 
     // Getters and Setters
@@ -27,17 +48,6 @@ public class ShoppingMall {
 
     public void setEstablishedDate(LocalDate establishedDate) {
         this.establishedDate = establishedDate;
-    }
-
-    // Static variable and method
-    private static int numberOfMalls = 0;
-
-    public static void incrementMallCount() {
-        numberOfMalls++;
-    }
-
-    public static int getNumberOfMalls() {
-        return numberOfMalls;
     }
 
     // A method with some logic

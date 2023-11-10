@@ -1,8 +1,10 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
+import com.laba.solvd.HW_ShoppingMallApp.interfaces.ShopOperations;
+
 import java.util.Objects;
 
-public class MyShop {
+public class MyShop implements ShopOperations {
     private String shopName;
     private Inventory inventory; // Composition example
 
@@ -10,6 +12,14 @@ public class MyShop {
         this.shopName = shopName;
         this.inventory = new Inventory(); // Connecting classes in a hierarchy
     }
+
+
+    @Override
+    public void closeShop() {
+        // Logic for closing the shop
+        System.out.println(shopName + " is now closed.");
+    }
+
 
     // Getters and Setters
     public String getShopName() {

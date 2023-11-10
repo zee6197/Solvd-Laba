@@ -1,10 +1,12 @@
 package com.laba.solvd.HW_ShoppingMallApp.people;
 
+import com.laba.solvd.HW_ShoppingMallApp.interfaces.CustomerService;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
-public class Customer {
+public class Customer implements CustomerService {
     private String customerId;
     private String name;
     private LocalDate birthDate;
@@ -19,6 +21,18 @@ public class Customer {
         this.birthDate = birthDate;
         this.registrationDate = LocalDate.now(); // Assume registration is today
         this.email = email;
+    }
+
+    @Override
+    public void registerComplaint(String complaint) {
+        // Logic to handle customer complaint
+        System.out.println("Customer complaint registered: " + complaint);
+    }
+
+    @Override
+    public void provideFeedback(String feedback) {
+        // Logic to handle customer feedback
+        System.out.println("Customer feedback received: " + feedback);
     }
 
     // Getters and setters for private properties

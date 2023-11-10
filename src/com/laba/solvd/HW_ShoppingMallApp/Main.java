@@ -20,30 +20,30 @@ public class Main {
         // Populate the product catalog with some products for the shopping mall
         populateProductCatalog();
 
-        // Checking if the command-line arguments are provided correctly
-        if (args.length < 1) {
-            System.out.println("Usage: java Main <product_name> <quantity> ... <payment_method>");
-            System.out.println("Example: java Main Bread 2 Milk 1 Checkout cash");
-            return;
-        }
+        // Process command-line arguments
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
 
-        // Processing actions based on the command-line arguments
-        for (int i = 0; i < args.length - 1; i += 2) {
-            String productName = args[i];
-            int quantity;
-            try {
-                quantity = Integer.parseInt(args[i + 1]);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid quantity: " + args[i + 1]);
+            if ("Checkout".equalsIgnoreCase(arg) && i + 1 < args.length) {
+                // Checkout command found, process payment
+                String paymentMethod = args[i + 1];
+                checkout(paymentMethod);
+                break;
+            } else if (i + 1 < args.length) {
+                // Assume product name and quantity are provided
+                try {
+                    int quantity = Integer.parseInt(args[i + 1]);
+                    addProductToCart(arg, quantity);
+                    i++; // Skip next argument as it's already processed as quantity
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid quantity: " + args[i + 1]);
+                    return;
+                }
+            } else {
+                System.out.println("Invalid input format.");
                 return;
             }
-
-            addProductToCart(productName, quantity);
         }
-
-        // The last argument is assumed to be the payment method
-        String paymentMethod = args[args.length - 1];
-        checkout(paymentMethod);
     }
 
     private static void populateProductCatalog() {
@@ -54,31 +54,24 @@ public class Main {
     }
 
     private static void addProductToCart(String productName, int quantity) {
-        // Search for the product by name
-        Product product = productCatalog.values().stream()
-                .filter(p -> p.getName().equalsIgnoreCase(productName))
-                .findFirst()
-                .orElse(null);
+        Product product = productCatalog.get(productName);
 
         if (product == null) {
             System.out.println("Product not found: " + productName);
             return;
         }
 
-        // Add the product to the cart
         CartItem cartItem = new CartItem(product, quantity);
         cart.addCartItem(cartItem);
         System.out.println("Added " + quantity + " of " + productName + " to the cart.");
     }
 
     private static void checkout(String paymentMethod) {
-        // Process the payment and print the receipt
         double total = cart.calculateTotal();
-        payment = new Payment(paymentMethod);
-        payment.setAmount(total);
+        payment = new Payment(total, paymentMethod);
         payment.processPayment();
 
         receipt = new Receipt(cart.getCartItems(), total, paymentMethod);
-        receipt.printReceipt();
+        receipt.finalPrintReceipt(); // Using the final method to print receipt
     }
 }

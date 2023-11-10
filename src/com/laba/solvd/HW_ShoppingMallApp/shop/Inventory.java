@@ -1,11 +1,13 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
+import com.laba.solvd.HW_ShoppingMallApp.interfaces.InventoryManagement;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Inventory {
+public class Inventory implements InventoryManagement {
     // Example of private properties
     private Map<Product, Integer> productStock;
     private LocalDate lastStockUpdate;
@@ -15,6 +17,20 @@ public class Inventory {
         this.productStock = new HashMap<>();
         this.lastStockUpdate = LocalDate.now();
     }
+
+    // Implementing InventoryManagement methods
+    @Override
+    public void addStock(Product product, int quantity) {
+        int currentQuantity = productStock.getOrDefault(product, 0);
+        productStock.put(product, currentQuantity + quantity);
+        lastStockUpdate = LocalDate.now();
+    }
+
+    @Override
+    public int checkStock(Product product) {
+        return productStock.getOrDefault(product, 0);
+    }
+
 
     // A method to add a product to the inventory
     public void addProduct(Product product, int quantity) {

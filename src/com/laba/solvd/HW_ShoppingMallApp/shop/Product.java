@@ -1,14 +1,36 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
-public class Product {
+import com.laba.solvd.HW_ShoppingMallApp.Checkout.AbstractItem;
+import com.laba.solvd.HW_ShoppingMallApp.interfaces.Discountable;
+
+public class Product extends AbstractItem implements Discountable {
     private String name;
     private double price;
 
     // Constructor that initializes a Product with a name and price
-    public Product(String name, String bread, double price) {
-        this.name = name;
+    public Product(String id, String name, double price) {
+        super(id, name);
         this.price = price;
     }
+
+
+    // Implementing Discountable methods
+    @Override
+    public void applyDiscount(double discountRate) {
+        if (isEligibleForDiscount()) {
+            this.price *= (1 - discountRate);
+            System.out.println("Discount applied. New price: " + this.price);
+        } else {
+            System.out.println("Product is not eligible for discount.");
+        }
+    }
+
+    @Override
+    public boolean isEligibleForDiscount() {
+        // All products are eligible for simplicity
+        return true;
+    }
+
 
     // Getter for the name
     public String getName() {
