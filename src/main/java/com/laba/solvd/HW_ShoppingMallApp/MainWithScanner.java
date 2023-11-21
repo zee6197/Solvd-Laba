@@ -35,14 +35,18 @@ public class MainWithScanner {
         productList.add(product2);
 
         // Display the list
+        System.out.println();
         System.out.println("Product List:");
         productList.display();
 
         // Example of removing a product
         productList.remove(product1);
+        System.out.println();
         System.out.println("Product List after removal:");
         productList.display();
 
+        System.out.println("-----------------");
+        System.out.println();
         System.out.println("Starting Shopping Mall Application");
         // Populate the product catalog with some products for the shopping mall
         populateProductCatalog();
