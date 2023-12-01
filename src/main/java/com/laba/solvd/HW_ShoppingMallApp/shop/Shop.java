@@ -8,6 +8,8 @@ import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
 import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 public class Shop implements ShoppingOperations {
     private String shopName;
@@ -29,6 +31,22 @@ public class Shop implements ShoppingOperations {
         this.inventory = new Inventory();
         this.employees = new HashSet<>(employees);
         this.customers = new HashSet<>(customers);
+    }
+
+
+
+    Predicate<Employee> isManager = employee -> "Manager".equals(employee.getPosition());
+
+    // BiFunction lambda to calculate discount based on category and price
+    BiFunction<String, Double, Double> calculateDiscount = (category, price) -> {
+        if ("Electronics".equals(category)) {
+            return price * 0.90;
+        }
+        return price;
+    };
+
+    public double applyDiscount(String category, double price) {
+        return calculateDiscount.apply(category, price);
     }
 
 

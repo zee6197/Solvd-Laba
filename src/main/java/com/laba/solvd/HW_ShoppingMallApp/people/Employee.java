@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.Objects;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 public abstract class Employee extends Person {
@@ -28,6 +29,9 @@ public abstract class Employee extends Person {
         this.salary = salary;
         this.employmentDate = employmentDate;
     }
+
+
+    Function<Employee, Integer> calculateAge = employee -> Period.between(employee.getBirthDate(), LocalDate.now()).getYears();
 
     // Method to calculate years of service
     public int calculateYearsOfService() {

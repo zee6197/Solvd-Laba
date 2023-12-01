@@ -5,6 +5,7 @@ import org.apache.maven.surefire.shade.org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public class Customer extends Person implements DisplayInfo {
@@ -34,6 +35,9 @@ public class Customer extends Person implements DisplayInfo {
                 "\nLast Name: " + this.lastName +
                 "\nLoyalty Points: " + this.loyaltyPoints);
     }
+
+
+    Consumer<Customer> updateLoyaltyPoints = customer -> customer.setLoyaltyPoints(customer.getLoyaltyPoints() + 10);
 
 
     public void displayCustomerDetails() {

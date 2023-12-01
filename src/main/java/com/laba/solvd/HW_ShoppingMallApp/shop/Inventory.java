@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Supplier;
 
 public class Inventory implements InventoryManagement {
 
@@ -23,6 +24,11 @@ public class Inventory implements InventoryManagement {
         this.lastStockUpdate = LocalDate.now();
         this.productStock = new HashMap<>();
     }
+
+
+
+    Supplier<String> defaultMessageSupplier = () -> "Inventory details are currently not available.";
+
 
     // Implementing InventoryManagement methods
     @Override

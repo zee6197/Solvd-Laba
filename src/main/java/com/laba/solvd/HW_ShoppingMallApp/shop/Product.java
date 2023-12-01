@@ -19,6 +19,28 @@ public class Product implements Discountable {
     }
 
 
+
+    public enum ProductCategory {
+        ELECTRONICS("Electronics"),
+        FOOD("Food"),
+        CLOTHING("Clothing");
+
+        private final String displayName;
+
+        ProductCategory(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
+
     // Implementing Discountable methods
     @Override
     public void offerDiscount(double discountRate) {
