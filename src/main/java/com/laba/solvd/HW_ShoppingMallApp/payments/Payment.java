@@ -17,11 +17,11 @@ public class Payment implements PaymentProcessor, DisplayInfo {
 
     private static final Logger LOGGER = LogManager.getLogger(Payment.class);
     // Static variable to generate unique payment IDs
-    public static int nextPaymentId = 1;
-    public int paymentId;
-    public double amount;
-    public LocalDate paymentDate;
-    public String paymentMethod;
+    private static int nextPaymentId = 1;
+    private int paymentId;
+    private double amount;
+    private LocalDate paymentDate;
+    private String paymentMethod;
 
     private List<CartItems> itemsPrice;
 

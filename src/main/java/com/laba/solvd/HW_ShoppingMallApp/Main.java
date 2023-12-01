@@ -1,8 +1,6 @@
 package com.laba.solvd.HW_ShoppingMallApp;
 
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.Checkout;
 import com.laba.solvd.HW_ShoppingMallApp.Checkout.CartItems;
-import com.laba.solvd.HW_ShoppingMallApp.LinkedList.CustomLinkedList;
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.InvalidQuantityException;
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.ProductNotFoundException;
 import com.laba.solvd.HW_ShoppingMallApp.payments.Payment;
@@ -13,6 +11,7 @@ import sun.util.resources.LocaleData;
 
 import java.util.Scanner;
 
+import static com.laba.solvd.HW_ShoppingMallApp.ShoppingMall.productList;
 import static sun.util.locale.provider.LocaleProviderAdapter.Type.JRE;
 
 public class Main {
@@ -21,9 +20,6 @@ public class Main {
 
 
         ShoppingMall zee_mall = new ShoppingMall("Zee Mall", new LocaleData(JRE));
-
-
-        CustomLinkedList<Product> productList = new CustomLinkedList<>();
 
         // Create some Product objects
         Product product1 = new Product("1", "Product1", 10.0);
@@ -94,8 +90,8 @@ public class Main {
 
     private static void populateProductCatalog() {
         // Adding some products to the product catalog
-        Shop.productCatalog.put("bread", new Product("001", "Bread", 2.99));
-        Shop.productCatalog.put("milk", new Product("002", "Milk", 1.49));
+        Shop.productCatalog.put("shirt", new Product("001", "Shirt", 21.99));
+        Shop.productCatalog.put("pants", new Product("002", "Pants", 31.49));
     }
 
     private static void addProductToCart(String productName, int quantity) throws ProductNotFoundException {

@@ -1,5 +1,6 @@
 package com.laba.solvd.HW_ShoppingMallApp;
 
+import com.laba.solvd.HW_ShoppingMallApp.LinkedList.CustomLinkedList;
 import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
 import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Inventory;
@@ -7,22 +8,21 @@ import com.laba.solvd.HW_ShoppingMallApp.shop.Shop;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
 import sun.util.resources.LocaleData;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.*;
 
 public class ShoppingMall {
 
-    public ArrayList<Object> inventory;
     private String name;
     private LocaleData establishedDate;
     private static int numberOfMalls;
 
 
     // hierarchy here:
-    public Set<Shop> shops;
-    public Set<Employee> employees;
-    public Set<Customer> customers;
+    private final Set<Shop> shops;
+    private final Set<Employee> employees;
+    private final Set<Customer> customers;
+    static CustomLinkedList<Product> productList = new CustomLinkedList<>();
 
 
     public ShoppingMall(String name, LocaleData date) {

@@ -35,7 +35,7 @@ public class Checkout implements Discountable, PaymentProcessor {
 
     public void processPayment(Payment payment) {
         // Logic to process the payment
-        logger.info("Processing payment of " + payment.amount + " via " + payment.paymentMethod);
+        logger.info("Processing payment of " + payment.getAmount() + " via " + payment.getPaymentMethod());
         // Further logic would follow
     }
 

@@ -13,10 +13,13 @@ public class Shop implements ShoppingOperations {
     private String shopName;
     public static Payment payment;
     public static Receipt receipt;
+
+
+
     // hierarchy here:
-    private Inventory inventory;
-    public Set<Employee> employees;
-    public Set<Customer> customers;
+    private final Inventory inventory;
+    private Set<Employee> employees;
+    private Set<Customer> customers;
     public static final Map<String, Product> productCatalog = new HashMap<>();
     public static final Checkout cart = new Checkout();
 
@@ -24,6 +27,8 @@ public class Shop implements ShoppingOperations {
         this.shopName = shopName;
         // Connecting classes in a hierarchy
         this.inventory = new Inventory();
+        this.employees = new HashSet<>(employees);
+        this.customers = new HashSet<>(customers);
     }
 
 
