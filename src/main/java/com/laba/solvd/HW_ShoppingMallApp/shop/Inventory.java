@@ -8,8 +8,6 @@ import java.time.LocalDate;
 
 public class Inventory implements InventoryManagement {
 
-    // hierarchy here:
-    public List<Product> products;
 
     // Example of private properties
     private LocalDate lastStockUpdate;
@@ -18,7 +16,6 @@ public class Inventory implements InventoryManagement {
 
     // Custom constructor that initializes the product stock and sets the last stock update date
     public Inventory() {
-        this.products = new ArrayList<>();
         this.lastStockUpdate = LocalDate.now();
         this.productStock = new HashMap<>();
     }

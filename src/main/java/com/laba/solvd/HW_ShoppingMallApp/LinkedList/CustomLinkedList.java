@@ -3,10 +3,21 @@ package com.laba.solvd.HW_ShoppingMallApp.LinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CustomLinkedList<T> {
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class CustomLinkedList<T> implements List<T> {
 
     private static final Logger logger = LogManager.getLogger(CustomLinkedList.class);
+    private int size;
     private Node head;
+
+    public CustomLinkedList() {
+        this.head = null;
+        this.size = 0;
+    }
 
     private class Node {
         T data;
@@ -19,8 +30,8 @@ public class CustomLinkedList<T> {
     }
 
     // Method to add a new element to the list
-    public void add(T data) {
-        Node newNode = new Node(data);
+    public boolean add(Object data) {
+        Node newNode = new Node((T) data);
         if (head == null) {
             head = newNode;
         } else {
@@ -30,25 +41,142 @@ public class CustomLinkedList<T> {
             }
             current.next = newNode;
         }
+        return false;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T1> T1[] toArray(T1[] a) {
+        return null;
     }
 
     // Method to remove an element from the list
-    public void remove(T data) {
+    public boolean remove(Object data) {
         if (head == null) {
-            return;
+            return false;
         }
         if (head.data.equals(data)) {
             head = head.next;
-            return;
+            return false;
         }
         Node current = head;
         while (current.next != null) {
             if (current.next.data.equals(data)) {
                 current.next = current.next.next;
-                return;
+                return false;
             }
             current = current.next;
         }
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public T get(int index) {
+        return null;
+    }
+
+    @Override
+    public T set(int index, T element) {
+        return null;
+    }
+
+    @Override
+    public void add(int index, T element) {
+
+    }
+
+    @Override
+    public T remove(int index) {
+        return null;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public List<T> subList(int fromIndex, int toIndex) {
+        return null;
     }
 
     // Method to display the list

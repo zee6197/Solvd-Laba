@@ -1,21 +1,34 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
-import com.laba.solvd.HW_ShoppingMallApp.interfaces.ShopOperations;
+import com.laba.solvd.HW_ShoppingMallApp.Checkout.Checkout;
+import com.laba.solvd.HW_ShoppingMallApp.interfaces.ShoppingOperations;
+import com.laba.solvd.HW_ShoppingMallApp.payments.Payment;
+import com.laba.solvd.HW_ShoppingMallApp.payments.Receipt;
+import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
+import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 
-import java.util.Objects;
+import java.util.*;
 
-public class MyShop implements ShopOperations {
+public class Shop implements ShoppingOperations {
     private String shopName;
-    private Inventory inventory; // Composition example
+    public static Payment payment;
+    public static Receipt receipt;
+    // hierarchy here:
+    private Inventory inventory;
+    public Set<Employee> employees;
+    public Set<Customer> customers;
+    public static final Map<String, Product> productCatalog = new HashMap<>();
+    public static final Checkout cart = new Checkout();
 
-    public MyShop(String shopName) {
+    public Shop(String shopName) {
         this.shopName = shopName;
-        this.inventory = new Inventory(); // Connecting classes in a hierarchy
+        // Connecting classes in a hierarchy
+        this.inventory = new Inventory();
     }
 
 
     @Override
-    public void closeShop() {
+    public void close() {
         // Logic for closing the shop
         System.out.println(shopName + " is now closed.");
     }
@@ -40,7 +53,7 @@ public class MyShop implements ShopOperations {
 
 
     // Overloaded methods
-    public void openShop() {
+    public void open() {
 
         System.out.println(shopName + " is now open.");
     }
@@ -63,7 +76,7 @@ public class MyShop implements ShopOperations {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        MyShop myShop = (MyShop) obj;
+        Shop myShop = (Shop) obj;
         return Objects.equals(shopName, myShop.shopName) &&
                 Objects.equals(inventory, myShop.inventory);
     }

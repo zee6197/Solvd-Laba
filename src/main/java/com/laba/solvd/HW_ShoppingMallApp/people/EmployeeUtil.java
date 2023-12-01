@@ -1,8 +1,5 @@
 package com.laba.solvd.HW_ShoppingMallApp.people;
 
-import com.laba.solvd.HW_ShoppingMallApp.people.employees.ShopManager;
-
-import java.time.LocalDate;
 import java.util.List;
 
 public class EmployeeUtil {

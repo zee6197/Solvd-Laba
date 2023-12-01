@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class Employee extends Person {
-    private static int nextId = 1; // Static variable to generate unique IDs for each employee
+
+    // Static variable to generate unique IDs for each employee
+    private static int nextId = 1;
 
     private static final Logger logger = Logger.getLogger(Employee.class.getName());
 

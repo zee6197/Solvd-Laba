@@ -15,7 +15,6 @@ public class ShopManager extends Employee implements DisplayInfo {
     private double bonus;
 
     // hierarchy here:
-    private List<Inventory> inventory;
     public List<Employee> employees;
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
 
@@ -25,15 +24,7 @@ public class ShopManager extends Employee implements DisplayInfo {
                        double salary, LocalDate employmentDate, double bonus) {
         super(firstName, lastName, birthDate, "Shop Manager", salary, employmentDate); // Position is set to "Shop Manager"
         this.bonus = bonus;
-        this.inventory = new ArrayList<>();
         this.employees = new ArrayList<>();
-
-    }
-
-
-    public void manageInventory() {
-
-        // Manger manages shop inventory
 
     }
 

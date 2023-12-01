@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class Checkout implements Discountable, PaymentProcessor {
     private List<CartItems> cartItems;
-    public int price = 1;
+    private int price = 1;
 
     public Checkout() {
         this.cartItems = new ArrayList<>();

@@ -2,6 +2,9 @@ package com.laba.solvd.HW_ShoppingMallApp.shop;
 
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.Discountable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Product implements Discountable {
 
     private String id;

@@ -3,34 +3,33 @@ package com.laba.solvd.HW_ShoppingMallApp;
 import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
 import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Inventory;
-import com.laba.solvd.HW_ShoppingMallApp.shop.MyShop;
+import com.laba.solvd.HW_ShoppingMallApp.shop.Shop;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
+import sun.util.resources.LocaleData;
 
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.*;
 
 public class ShoppingMall {
+
+    public ArrayList<Object> inventory;
     private String name;
-    private LocalDate establishedDate;
+    private LocaleData establishedDate;
     private static int numberOfMalls;
 
 
     // hierarchy here:
-    public Set<MyShop> shops;
-    public List<Inventory> inventory;
-    public Set<Product> products;
+    public Set<Shop> shops;
     public Set<Employee> employees;
     public Set<Customer> customers;
 
 
-    public ShoppingMall(String name, LocalDate date) {
+    public ShoppingMall(String name, LocaleData date) {
         this.name = name;
         this.establishedDate = date;
         // hierarchy here:
         this.shops = new HashSet<>();
-        this.inventory = new ArrayList<>();
-        this.products = new HashSet<>();
         this.employees = new HashSet<>();
         this.customers = new HashSet<>();
     }
@@ -49,7 +48,7 @@ public class ShoppingMall {
         return numberOfMalls;
     }
 
-    public void addShop(MyShop shop) {
+    public void addShop(Shop shop) {
         shops.add(shop);
     }
 
@@ -62,11 +61,11 @@ public class ShoppingMall {
         this.name = name;
     }
 
-    public LocalDate getEstablishedDate() {
+    public LocaleData getEstablishedDate() {
         return establishedDate;
     }
 
-    public void setEstablishedDate(LocalDate establishedDate) {
+    public void setEstablishedDate(LocaleData establishedDate) {
         this.establishedDate = establishedDate;
     }
 
@@ -78,7 +77,7 @@ public class ShoppingMall {
 
     // Method to add stock to a shop's inventory
     public void addStockToShop(String shopName, Product product, int quantity) {
-        for (MyShop shop : shops) {
+        for (Shop shop : shops) {
             if (shop.getShopName().equals(shopName)) {
                 shop.getInventory().addStock(product, quantity);
                 break;
@@ -88,7 +87,7 @@ public class ShoppingMall {
 
     // Method to apply a discount to all products in the mall
     public void applyDiscountToAllProducts(double discountRate) {
-        for (MyShop shop : shops) {
+        for (Shop shop : shops) {
             Inventory inventory = shop.getInventory();
             for (Product product : inventory.getProductStock().keySet()) {
                 product.offerDiscount(discountRate);
