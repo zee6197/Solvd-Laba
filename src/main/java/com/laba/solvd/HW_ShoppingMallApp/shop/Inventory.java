@@ -5,6 +5,10 @@ import com.laba.solvd.HW_ShoppingMallApp.interfaces.InventoryManagement;
 
 import java.util.*;
 import java.time.LocalDate;
+import org.apache.commons.io.FileUtils;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Inventory implements InventoryManagement {
 
@@ -39,6 +43,23 @@ public class Inventory implements InventoryManagement {
         int currentQuantity = productStock.getOrDefault(product, 0);
         productStock.put(product, currentQuantity + quantity);
         lastStockUpdate = LocalDate.now(); // Update the stock update date
+    }
+
+
+    public void writeInventoryToFile() {
+        File file = new File("inventory.txt");
+        StringBuilder inventoryDetails = new StringBuilder();
+        for (Map.Entry<Product, Integer> entry : productStock.entrySet()) {
+            inventoryDetails.append(entry.getKey().toString())
+                    .append(" - Stock: ")
+                    .append(entry.getValue())
+                    .append(System.lineSeparator());
+        }
+        try {
+            FileUtils.writeStringToFile(file, inventoryDetails.toString(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // A method to get the quantity of a product in the inventory

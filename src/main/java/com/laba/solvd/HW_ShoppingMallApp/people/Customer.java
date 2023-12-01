@@ -1,6 +1,7 @@
 package com.laba.solvd.HW_ShoppingMallApp.people;
 
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.DisplayInfo;
+import org.apache.maven.surefire.shade.org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -32,6 +33,16 @@ public class Customer extends Person implements DisplayInfo {
         logger.info("Details for Customer: \nName: " + this.firstName +
                 "\nLast Name: " + this.lastName +
                 "\nLoyalty Points: " + this.loyaltyPoints);
+    }
+
+
+    public void displayCustomerDetails() {
+        // Example usages of StringUtils functions
+        logger.info("Is Email Empty: " + StringUtils.isEmpty(email));
+        logger.info("Email in Reverse: " + StringUtils.reverse(email));
+        logger.info("Capitalize Name: " + StringUtils.capitalize(firstName));
+        logger.info("Abbreviating Last Name: " + StringUtils.abbreviate(lastName, 10));
+        logger.info("Count Matches of 'a' in First Name: " + StringUtils.countMatches(firstName, 'a'));
     }
 
     // Getters and setters for private properties

@@ -8,7 +8,12 @@ import com.laba.solvd.HW_ShoppingMallApp.payments.Receipt;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Shop;
 import sun.util.resources.LocaleData;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import static com.laba.solvd.HW_ShoppingMallApp.ShoppingMall.productList;
@@ -118,5 +123,15 @@ public class Main {
 
         Shop.receipt = new Receipt(Shop.cart.getCartItems(), total, paymentMethod);
         Shop.receipt.finalPrintReceipt(); // Using the final method to print receipt
+    }
+
+    public static void readInventoryFromFile() {
+        File file = new File("inventory.txt");
+        try {
+            String fileContent = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            System.out.println("Inventory Details:\n" + fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
