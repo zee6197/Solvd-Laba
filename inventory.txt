@@ -1,2 +1,0 @@
-Product{name='Pants', price=20.0} - Stock: 2
-Product{name='Shirt', price=10.0} - Stock: 2
