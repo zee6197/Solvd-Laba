@@ -12,7 +12,6 @@ public class PoolUser implements Runnable {
 
             // Simulating work with the connection
             Thread.sleep(1000);
-
             pool.releaseConnection(connection);
             System.out.println("Released a connection: " + Thread.currentThread().getName());
         } catch (InterruptedException e) {
