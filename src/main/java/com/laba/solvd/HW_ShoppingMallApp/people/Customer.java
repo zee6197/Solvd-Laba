@@ -5,6 +5,7 @@ import org.apache.maven.surefire.shade.org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -12,8 +13,8 @@ public class Customer extends Person implements DisplayInfo {
     private String customerId;
     private LocalDate registrationDate;
     private String email;
-    private static int loyaltyPoints;
-    private static final Logger logger = Logger.getLogger(Customer.class.getName());
+    private int loyaltyPoints;
+    private final Logger logger = Logger.getLogger(Customer.class.getName());
 
     // Custom constructor
     public Customer(String firstName, String lastName, LocalDate birthDate,
@@ -37,8 +38,6 @@ public class Customer extends Person implements DisplayInfo {
     }
 
 
-    Consumer<Customer> updateLoyaltyPoints = customer -> customer.setLoyaltyPoints(customer.getLoyaltyPoints() + 10);
-
 
     public void displayCustomerDetails() {
         // Example usages of StringUtils functions
@@ -50,39 +49,41 @@ public class Customer extends Person implements DisplayInfo {
     }
 
     // Getters and setters for private properties
-    public String getCustomerId() {
-        return customerId;
-    }
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
 
     // Registration date does not change once set, hence no setter
-
-    public String getEmail() {
-        return email;
-    }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public static int getLoyaltyPoints() {
+    public int getLoyaltyPoints() {
         return loyaltyPoints;
     }
 
-    public static void setLoyaltyPoints(int points) {
+    public void setLoyaltyPoints(int points) {
         loyaltyPoints = points;
     }
 
     // A method to check if the customer is eligible for a senior discount
     public boolean isEligibleForSeniorDiscount() {
         return calculateAge() >= 65;
+    }
+
+    public Optional<String> getCustomerId() {
+        return Optional.ofNullable(customerId);
+    }
+
+    public Optional<LocalDate> getRegistrationDate() {
+        return Optional.ofNullable(registrationDate);
+    }
+
+    public Optional<String> getEmail() {
+        return Optional.ofNullable(email);
     }
 
     // toString method

@@ -4,11 +4,10 @@ import com.laba.solvd.HW_ShoppingMallApp.interfaces.DisplayInfo;
 import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
 import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Inventory;
+import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ShopManager extends Employee implements DisplayInfo {
@@ -16,7 +15,8 @@ public class ShopManager extends Employee implements DisplayInfo {
 
     // hierarchy here:
     public List<Employee> employees;
-    private static final Logger logger = Logger.getLogger(Customer.class.getName());
+    private Map<Product, Integer> productStock;
+    private final Logger logger = Logger.getLogger(Customer.class.getName());
 
 
     // Custom constructor for ShopManager
@@ -65,6 +65,14 @@ public class ShopManager extends Employee implements DisplayInfo {
     }
 
 
+
+    public Optional<Map<Product, Integer>> getProductStock() {
+        return Optional.ofNullable(productStock);
+    }
+
+    public Optional<List<Employee>> getEmployees() {
+        return Optional.ofNullable(employees);
+    }
     @Override
     public void showAttributes() {
         logger.info("Shop Manager's first name: " + this.firstName + "last name " + this.lastName);

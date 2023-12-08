@@ -1,4 +1,4 @@
-package com.laba.solvd.HW_ShoppingMallApp.Checkout;
+package com.laba.solvd.HW_ShoppingMallApp.checkout;
 
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.Discountable;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.PaymentProcessor;
@@ -25,7 +25,7 @@ public class Checkout implements Discountable, PaymentProcessor {
         return this.cartItems;
     }
 
-    private static final Logger logger = Logger.getLogger(Checkout.class.getName());
+    private final Logger logger = Logger.getLogger(Checkout.class.getName());
 
     public double calculateTotal() {
         return cartItems.stream()

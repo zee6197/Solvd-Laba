@@ -1,38 +1,47 @@
 package com.laba.solvd.HW_ShoppingMallApp;
 
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.CartItems;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.CartItems;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.Checkout;
+import com.laba.solvd.HW_ShoppingMallApp.LinkedList.CustomLinkedList;
+import com.laba.solvd.HW_ShoppingMallApp.enums.PaymentMethod;
+import com.laba.solvd.HW_ShoppingMallApp.enums.ProductCategory;
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.InvalidQuantityException;
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.ProductNotFoundException;
 import com.laba.solvd.HW_ShoppingMallApp.payments.Payment;
 import com.laba.solvd.HW_ShoppingMallApp.payments.Receipt;
+import com.laba.solvd.HW_ShoppingMallApp.shop.Inventory;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
-import com.laba.solvd.HW_ShoppingMallApp.shop.Shop;
-import sun.util.resources.LocaleData;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
-import static com.laba.solvd.HW_ShoppingMallApp.ShoppingMall.productList;
-import static sun.util.locale.provider.LocaleProviderAdapter.Type.JRE;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
 
 
-        ShoppingMall zee_mall = new ShoppingMall("Zee Mall", new LocaleData(JRE));
-
+        ShoppingMall zee_mall = new ShoppingMall("Zee Mall", LocalDate.of(2023, 12, 1));
         // Create some Product objects
-        Product product1 = new Product("1", "Product1", 10.0);
-        Product product2 = new Product("2", "Product2", 20.0);
+        Product Shirt = new Product("1", "Shirt", 10.0, ProductCategory.APPAREL);
+        Product Pants = new Product("2", "Pants", 20.0, ProductCategory.APPAREL);
+        CustomLinkedList<Product> productList = new CustomLinkedList<>();
+        // Initialize Inventory
+        Inventory inventory = new Inventory();
+        // Calling reflectClassInfo method to print class information
+        inventory.reflectClassInfo();
+        // After modifying the inventory, write to the file
+        inventory.addStock(Shirt, 2);
+        inventory.addStock(Pants, 2);
+        // Read and display inventory from the file
+        readInventoryFromFile();
 
         // Add products to the list
-        productList.add(product1);
-        productList.add(product2);
+        productList.add(Shirt);
+        productList.add(Pants);
 
         // Display the list
         System.out.println();
@@ -40,7 +49,7 @@ public class Main {
         productList.display();
 
         // Example of removing a product
-        productList.remove(product1);
+        productList.remove(Shirt);
         System.out.println();
         System.out.println("Product List after removal:");
         productList.display();
@@ -53,7 +62,8 @@ public class Main {
 
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
-                System.out.println("\nWelcome to " + zee_mall.getName());
+                System.out.println("\nWelcome to " + zee_mall.getName() + "!");
+                System.out.println("Established since: " + zee_mall.getEstablishedDate());
                 System.out.println("\nShopping Mall Menu:");
                 System.out.println("1. Add Product to Cart");
                 System.out.println("2. Checkout");
@@ -93,43 +103,59 @@ public class Main {
         }
     }
 
+    static final Map<String, Product> productCatalog = new HashMap<>();
+    static final Checkout cart = new Checkout();
+
     private static void populateProductCatalog() {
         // Adding some products to the product catalog
-        Shop.productCatalog.put("shirt", new Product("001", "Shirt", 21.99));
-        Shop.productCatalog.put("pants", new Product("002", "Pants", 31.49));
+        productCatalog.put("shirt", new Product("001", "Shirt", 21.99, ProductCategory.APPAREL));
+        productCatalog.put("pants", new Product("002", "Pants", 31.49, ProductCategory.APPAREL));
     }
 
-    private static void addProductToCart(String productName, int quantity) throws ProductNotFoundException {
+    private static Optional<Product> addProductToCart(String productName, int quantity) throws ProductNotFoundException {
+        Product product = productCatalog.get(productName);
+        if (product == null) {
+            System.out.println("Product not found: " + productName);
+            return Optional.empty();
+        }
         try {
-            Product product = Shop.productCatalog.get(productName);
-
-            if (product == null) {
-                System.out.println("Product not found: " + productName);
-                return;
-            }
-
             CartItems cartItem = new CartItems(product, quantity);
-            Shop.cart.addCartItem(cartItem);
+            cart.addCartItem(cartItem);
             System.out.println("Added " + quantity + " of " + productName + " to the cart.");
         } catch (InvalidQuantityException e) {
             System.out.println("Error adding product to cart: " + e.getMessage());
         }
+        return Optional.of(product);
     }
 
     private static void checkout(String paymentMethod) {
-        double total = Shop.cart.calculateTotal();
-        Shop.payment = new Payment(total, paymentMethod);
-        Shop.payment.processPayment();
-
-        Shop.receipt = new Receipt(Shop.cart.getCartItems(), total, paymentMethod);
-        Shop.receipt.finalPrintReceipt(); // Using the final method to print receipt
+        double total = cart.calculateTotal();
+        PaymentMethod method = PaymentMethod.valueOf(paymentMethod.toUpperCase());
+        Payment payment = new Payment(total, method);
+        payment.processPayment();
+        Receipt receipt = new Receipt(cart.getCartItems(), total, method);
+        receipt.finalPrintReceipt();  // Using the final method to print receipt
     }
+
+    List<Product> expensiveProducts = productCatalog.values().stream()
+            .filter(product -> product.getPrice() > 100)
+            .collect(Collectors.toList());
+
+    List<String> productNames = productCatalog.values().stream()
+            .map(Product::getName)
+            .collect(Collectors.toList());
+
+    Optional<Product> mostExpensiveProduct = productCatalog.values().stream()
+            .max(Comparator.comparing(Product::getPrice));
 
     public static void readInventoryFromFile() {
         File file = new File("inventory.txt");
-        try {
-            String fileContent = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-            System.out.println("Inventory Details:\n" + fileContent);
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(line);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

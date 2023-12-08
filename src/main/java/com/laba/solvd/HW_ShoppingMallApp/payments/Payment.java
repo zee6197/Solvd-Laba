@@ -1,7 +1,8 @@
 package com.laba.solvd.HW_ShoppingMallApp.payments;
 
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.CartItems;
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.Checkout;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.CartItems;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.Checkout;
+import com.laba.solvd.HW_ShoppingMallApp.enums.PaymentMethod;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.DisplayInfo;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.PaymentProcessor;
 
@@ -15,9 +16,9 @@ import org.apache.logging.log4j.Logger;
 
 public class Payment implements PaymentProcessor, DisplayInfo {
 
-    private static final Logger LOGGER = LogManager.getLogger(Payment.class);
+    private final Logger LOGGER = LogManager.getLogger(Payment.class);
     // Static variable to generate unique payment IDs
-    private static int nextPaymentId = 1;
+    private int nextPaymentId = 1;
     private int paymentId;
     private double amount;
     private LocalDate paymentDate;
@@ -28,16 +29,16 @@ public class Payment implements PaymentProcessor, DisplayInfo {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Checkout.class.getName());
 
     // Custom constructor that initializes a payment with an amount and method
-    public Payment(double amount, String paymentMethod) {
+    public Payment(double amount, PaymentMethod paymentMethod) {
         this.amount = amount;
         this.paymentId = getNextPaymentId();
-        this.paymentMethod = paymentMethod;
+        this.paymentMethod = String.valueOf(paymentMethod);
         this.paymentDate = LocalDate.now();
         //this.itemsPrice = itemsPrice;
     }
 
     // Static method to reset payment IDs, for example, could be used in testing
-    public static void resetPaymentIdCounter() {
+    public void resetPaymentIdCounter() {
         nextPaymentId = 1;
     }
 
@@ -81,7 +82,7 @@ public class Payment implements PaymentProcessor, DisplayInfo {
     }
 
     // Static method to get the next payment ID and increment the static counter
-    private static int getNextPaymentId() {
+    private int getNextPaymentId() {
         return nextPaymentId++;
     }
 

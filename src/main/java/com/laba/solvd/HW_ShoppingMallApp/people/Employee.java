@@ -13,7 +13,7 @@ public abstract class Employee extends Person {
     // Static variable to generate unique IDs for each employee
     private static int nextId = 1;
 
-    private static final Logger logger = Logger.getLogger(Employee.class.getName());
+    private final Logger logger = Logger.getLogger(Employee.class.getName());
 
     private int employeeId;
     private String position;
@@ -31,7 +31,16 @@ public abstract class Employee extends Person {
     }
 
 
-    Function<Employee, Integer> calculateAge = employee -> Period.between(employee.getBirthDate(), LocalDate.now()).getYears();
+
+
+    public static class RegularEmployee extends Employee {
+
+        public RegularEmployee(String firstName, String lastName, LocalDate birthDate,
+                               String position, double salary, LocalDate employmentDate) {
+            super(firstName, lastName, birthDate, position, salary, employmentDate);
+        }
+    }
+
 
     // Method to calculate years of service
     public int calculateYearsOfService() {
@@ -61,7 +70,7 @@ public abstract class Employee extends Person {
     }
 
     // Static method to get the next available ID
-    public static int getNextId() {
+    public int getNextId() {
         return nextId;
     }
 

@@ -1,6 +1,7 @@
 package com.laba.solvd.HW_ShoppingMallApp.payments;
 
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.CartItems;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.CartItems;
+import com.laba.solvd.HW_ShoppingMallApp.enums.PaymentMethod;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
 
 import java.time.LocalDate;
@@ -12,12 +13,12 @@ public final class Receipt {
     private final int receiptNumber;
     private final LocalDate issueDate;
     private List<CartItems> itemsPurchased;
-    private static int receiptCounter = 0;
+    private int receiptCounter = 0;
     private double totalAmount;
     private String paymentMethod;
 
     // Constructor
-    public Receipt(List<CartItems> itemsPurchased, double totalAmount, String paymentMethod) {
+    public Receipt(List<CartItems> itemsPurchased, double totalAmount, PaymentMethod paymentMethod) {
         this.receiptNumber = ++receiptCounter; // Unique receipt number
         this.issueDate = LocalDate.now(); // Current date
         this.itemsPurchased = itemsPurchased;
@@ -26,7 +27,7 @@ public final class Receipt {
     }
 
     // Static method to access the static counter variable
-    public static int getNextReceiptNumber() {
+    public int getNextReceiptNumber() {
         return receiptCounter + 1;
     }
 
@@ -39,12 +40,16 @@ public final class Receipt {
         System.out.println("Receipt Number: " + receiptNumber);
         System.out.println("Issue Date: " + issueDate);
         System.out.println("Items Purchased:");
-        for (CartItems item : itemsPurchased) {
-            Product product = item.getProduct();
-            if (product != null) {
-                System.out.println("Product ID: " + product.getName() + ", Product Name: " + product.getName() + ", Unit Price: " + product.getPrice() + ", Quantity: " + item.getQuantity() + ", Total: " + (product.getPrice() * item.getQuantity()));
-            }
-        }
+        itemsPurchased.stream()
+                .map(item -> {
+                    Product product = item.getProduct();
+                    if (product != null) {
+                        return "Product ID: " + product.getName() + ", Product Name: " + product.getName() + ", Unit Price: " + product.getPrice() + ", Quantity: " + item.getQuantity() + ", Total: " + (product.getPrice() * item.getQuantity());
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .forEach(System.out::println);
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Payment Method: " + paymentMethod);
     }

@@ -1,4 +1,4 @@
-package com.laba.solvd.HW_ShoppingMallApp.Checkout;
+package com.laba.solvd.HW_ShoppingMallApp.checkout;
 
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.InvalidQuantityException;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;

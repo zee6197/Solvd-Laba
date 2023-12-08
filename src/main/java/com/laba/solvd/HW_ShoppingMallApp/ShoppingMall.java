@@ -8,24 +8,24 @@ import com.laba.solvd.HW_ShoppingMallApp.shop.Shop;
 import com.laba.solvd.HW_ShoppingMallApp.shop.Product;
 import sun.util.resources.LocaleData;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.*;
 
 public class ShoppingMall {
 
     private String name;
-    private LocaleData establishedDate;
-    private static int numberOfMalls;
+    private LocalDate establishedDate;
+    private int numberOfMalls = 0;
 
 
     // hierarchy here:
     private final Set<Shop> shops;
     private final Set<Employee> employees;
     private final Set<Customer> customers;
-    static CustomLinkedList<Product> productList = new CustomLinkedList<>();
 
 
-    public ShoppingMall(String name, LocaleData date) {
+    public ShoppingMall(String name, LocalDate date) {
         this.name = name;
         this.establishedDate = date;
         // hierarchy here:
@@ -34,17 +34,11 @@ public class ShoppingMall {
         this.customers = new HashSet<>();
     }
 
-    // Static initialization block
-    static {
-        // Initial count of malls
-        numberOfMalls = 0;
-    }
-
-    private static void incrementMallCount() {
+    private void incrementMallCount() {
         numberOfMalls++;
     }
 
-    public static int getNumberOfMalls() {
+    public int getNumberOfMalls() {
         return numberOfMalls;
     }
 
@@ -61,11 +55,11 @@ public class ShoppingMall {
         this.name = name;
     }
 
-    public LocaleData getEstablishedDate() {
+    public LocalDate getEstablishedDate() {
         return establishedDate;
     }
 
-    public void setEstablishedDate(LocaleData establishedDate) {
+    public void setEstablishedDate(LocalDate establishedDate) {
         this.establishedDate = establishedDate;
     }
 
@@ -77,22 +71,17 @@ public class ShoppingMall {
 
     // Method to add stock to a shop's inventory
     public void addStockToShop(String shopName, Product product, int quantity) {
-        for (Shop shop : shops) {
-            if (shop.getShopName().equals(shopName)) {
-                shop.getInventory().addStock(product, quantity);
-                break;
-            }
-        }
+        shops.stream()
+                .filter(shop -> shop.getShopName().equals(shopName))
+                .findFirst()
+                .ifPresent(shop -> shop.getInventory().addStock(product, quantity));
     }
 
     // Method to apply a discount to all products in the mall
     public void applyDiscountToAllProducts(double discountRate) {
-        for (Shop shop : shops) {
-            Inventory inventory = shop.getInventory();
-            for (Product product : inventory.getProductStock().keySet()) {
-                product.offerDiscount(discountRate);
-            }
-        }
+        shops.stream()
+                .flatMap(shop -> shop.getInventory().getProductStock().keySet().stream())
+                .forEach(product -> product.offerDiscount(discountRate));
     }
 
 

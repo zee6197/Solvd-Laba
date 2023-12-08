@@ -1,63 +1,176 @@
 package com.laba.solvd.HW_ShoppingMallApp.LinkedList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class CustomLinkedList<T> implements List<T> {
 
-    private static final Logger logger = LogManager.getLogger(CustomLinkedList.class);
+    private Node<T> head;
     private int size;
-    private Node head;
 
     public CustomLinkedList() {
         this.head = null;
         this.size = 0;
     }
 
-    private class Node {
-        T data;
-        Node next;
 
-        Node(T data) {
-            this.data = data;
-            this.next = null;
+    /* Method which must be implemented:
+
+    hashCode();
+    equals();
+    void clear();
+    boolean removeAll(Collection<?> c);
+    boolean addAll(Collection<? extends E> c);
+    boolean containsAll(Collection<?> c);
+    boolean remove(Object o);
+    boolean add(E e);
+    boolean contains(Object o);
+    boolean isEmpty();
+    int size();
+
+     */
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        for (T element : this) {
+            hash = 17 * hash + (element == null ? 0 : element.hashCode());
         }
+        return hash;
     }
 
-    // Method to add a new element to the list
-    public boolean add(Object data) {
-        Node newNode = new Node((T) data);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomLinkedList<?> that = (CustomLinkedList<?>) o;
+        return size == that.size && Objects.equals(head, that.head);
+    }
+
+    @Override
+    public void clear() {
+        head = null;
+        size = 0;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        boolean modified = false;
+
+        for (Object element : c) {
+            modified |= remove(element);
+        }
+        return modified;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        for (T element : c) {
+            add(element);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object element : c) {
+            if (!contains(element)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        if (head == null) {
+            return false;
+        }
+        if (Objects.equals(head.data, o)) {
+            head = head.next;
+            size--;
+            return true;
+        }
+        Node<T> current = head;
+        Node<T> previous = null;
+        while (current != null && !Objects.equals(current.data, o)) {
+            previous = current;
+            current = current.next;
+        }
+        if (current == null) {
+            return false;
+        }
+        previous.next = current.next;
+        size--;
+        return true;
+    }
+
+    @Override
+    public boolean add(T e) {
+        Node<T> newNode = new Node<>(e);
         if (head == null) {
             head = newNode;
         } else {
-            Node current = head;
+            Node<T> current = head;
             while (current.next != null) {
                 current = current.next;
             }
             current.next = newNode;
         }
-        return false;
-    }
-
-    @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
+        size++;
+        return true;
     }
 
     @Override
     public boolean contains(Object o) {
+        Node<T> current = head;
+        while (current != null) {
+            if (Objects.equals(current.data, o)) {
+                return true;
+            }
+            current = current.next;
+        }
         return false;
     }
+
+    @Override
+    public boolean isEmpty() {
+        if (size == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+
+    @Override
+    public T get(int index) {
+        return null;
+    }
+
+    @Override
+    public T set(int index, T element) {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("[");
+        Iterator<T> iterator = iterator();
+        while (iterator.hasNext()) {
+            result.append(iterator.next());
+            if (iterator.hasNext()) {
+                result.append(", ");
+            }
+        }
+        result.append("]");
+        return result.toString();
+    }
+
 
     @Override
     public Iterator<T> iterator() {
@@ -74,43 +187,8 @@ public class CustomLinkedList<T> implements List<T> {
         return null;
     }
 
-    // Method to remove an element from the list
-    public boolean remove(Object data) {
-        if (head == null) {
-            return false;
-        }
-        if (head.data.equals(data)) {
-            head = head.next;
-            return false;
-        }
-        Node current = head;
-        while (current.next != null) {
-            if (current.next.data.equals(data)) {
-                current.next = current.next.next;
-                return false;
-            }
-            current = current.next;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return false;
-    }
-
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
         return false;
     }
 
@@ -120,39 +198,10 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public T get(int index) {
-        return null;
-    }
-
-    @Override
-    public T set(int index, T element) {
-        return null;
-    }
-
-    @Override
-    public void add(int index, T element) {
-
-    }
-
-    @Override
     public T remove(int index) {
         return null;
     }
+
 
     @Override
     public int indexOf(Object o) {
@@ -165,17 +214,17 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     @Override
+    public void add(int index, T element) {
+
+    }
+
+    @Override
     public ListIterator<T> listIterator() {
         return null;
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public List<T> subList(int fromIndex, int toIndex) {
         return null;
     }
 
@@ -190,5 +239,10 @@ public class CustomLinkedList<T> implements List<T> {
             current = current.next;
         }
         System.out.println(); // For a new line after the list
+    }
+
+    @Override
+    public List<T> subList(int fromIndex, int toIndex) {
+        return null;
     }
 }

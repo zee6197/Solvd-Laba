@@ -3,13 +3,17 @@ package com.laba.solvd.HW_ShoppingMallApp.shop;
 import com.laba.solvd.HW_ShoppingMallApp.exceptions.InsufficientStockException;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.InventoryManagement;
 
+import java.io.FileWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.time.LocalDate;
+
 import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.function.Supplier;
 
 public class Inventory implements InventoryManagement {
 
@@ -26,20 +30,43 @@ public class Inventory implements InventoryManagement {
     }
 
 
+    // Method to extract class information using reflection
+    public void reflectClassInfo() {
+        try {
+            Class<?> cls = this.getClass();
+            System.out.println("Class: " + cls.getName());
+            // Extract fields
+            Field[] fields = cls.getDeclaredFields();
+            for (Field field : fields) {
+                System.out.println("Field: " + field.getName() + ", Type: " + field.getType());
+            }
+            // Extract constructors
+            Constructor<?>[] constructors = cls.getDeclaredConstructors();
+            for (Constructor<?> constructor : constructors) {
+                System.out.println("Constructor: " + constructor);
+            }
+            // Extract methods
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println("Method: " + method.getName() + ", Return type: " + method.getReturnType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    Supplier<String> defaultMessageSupplier = () -> "Inventory details are currently not available.";
-
-
-    // Implementing InventoryManagement methods
+    /// Implementing InventoryManagement methods
     @Override
     public void addStock(Product product, int quantity) {
         int currentQuantity = productStock.getOrDefault(product, 0);
         productStock.put(product, currentQuantity + quantity);
         lastStockUpdate = LocalDate.now();
+        writeInventoryToFile(); // Write to file after updating inventory
     }
 
     @Override
     public int checkStock(Product product) {
+
         return productStock.getOrDefault(product, 0);
     }
 
@@ -48,7 +75,8 @@ public class Inventory implements InventoryManagement {
     public void addProduct(Product product, int quantity) {
         int currentQuantity = productStock.getOrDefault(product, 0);
         productStock.put(product, currentQuantity + quantity);
-        lastStockUpdate = LocalDate.now(); // Update the stock update date
+        lastStockUpdate = LocalDate.now();
+        writeInventoryToFile(); // Write to file after adding a product
     }
 
 
@@ -61,12 +89,14 @@ public class Inventory implements InventoryManagement {
                     .append(entry.getValue())
                     .append(System.lineSeparator());
         }
-        try {
-            FileUtils.writeStringToFile(file, inventoryDetails.toString(), StandardCharsets.UTF_8);
+
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(inventoryDetails.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     // A method to get the quantity of a product in the inventory
     public int getProductQuantity(Product product) {
@@ -82,6 +112,7 @@ public class Inventory implements InventoryManagement {
     public void removeProduct(Product product) throws InsufficientStockException {
         removeProduct(product, 1); // Remove a single unit by default
     }
+
 
     public void removeProduct(Product product, int quantity) throws InsufficientStockException {
         int currentStock = productStock.getOrDefault(product, 0);

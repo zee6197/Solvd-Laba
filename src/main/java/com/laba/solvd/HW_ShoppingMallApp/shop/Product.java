@@ -2,9 +2,6 @@ package com.laba.solvd.HW_ShoppingMallApp.shop;
 
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.Discountable;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Product implements Discountable {
 
     private String id;
@@ -12,7 +9,7 @@ public class Product implements Discountable {
     private double price;
 
     // Constructor that initializes a Product with a name and price
-    public Product(String id, String name, double price) {
+    public Product(String id, String name, double price, com.laba.solvd.HW_ShoppingMallApp.enums.ProductCategory apparel) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -20,26 +17,6 @@ public class Product implements Discountable {
 
 
 
-    public enum ProductCategory {
-        ELECTRONICS("Electronics"),
-        FOOD("Food"),
-        CLOTHING("Clothing");
-
-        private final String displayName;
-
-        ProductCategory(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        @Override
-        public String toString() {
-            return displayName;
-        }
-    }
 
     // Implementing Discountable methods
     @Override

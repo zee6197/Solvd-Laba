@@ -1,6 +1,6 @@
 package com.laba.solvd.HW_ShoppingMallApp.shop;
 
-import com.laba.solvd.HW_ShoppingMallApp.Checkout.Checkout;
+import com.laba.solvd.HW_ShoppingMallApp.checkout.Checkout;
 import com.laba.solvd.HW_ShoppingMallApp.interfaces.ShoppingOperations;
 import com.laba.solvd.HW_ShoppingMallApp.payments.Payment;
 import com.laba.solvd.HW_ShoppingMallApp.payments.Receipt;
@@ -8,13 +8,11 @@ import com.laba.solvd.HW_ShoppingMallApp.people.Customer;
 import com.laba.solvd.HW_ShoppingMallApp.people.Employee;
 
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 public class Shop implements ShoppingOperations {
     private String shopName;
-    public static Payment payment;
-    public static Receipt receipt;
+    public Payment payment;
+    public Receipt receipt;
 
 
 
@@ -22,8 +20,8 @@ public class Shop implements ShoppingOperations {
     private final Inventory inventory;
     private Set<Employee> employees;
     private Set<Customer> customers;
-    public static final Map<String, Product> productCatalog = new HashMap<>();
-    public static final Checkout cart = new Checkout();
+    public final Map<String, Product> productCatalog = new HashMap<>();
+    public final Checkout cart = new Checkout();
 
     public Shop(String shopName) {
         this.shopName = shopName;
@@ -31,22 +29,6 @@ public class Shop implements ShoppingOperations {
         this.inventory = new Inventory();
         this.employees = new HashSet<>(employees);
         this.customers = new HashSet<>(customers);
-    }
-
-
-
-    Predicate<Employee> isManager = employee -> "Manager".equals(employee.getPosition());
-
-    // BiFunction lambda to calculate discount based on category and price
-    BiFunction<String, Double, Double> calculateDiscount = (category, price) -> {
-        if ("Electronics".equals(category)) {
-            return price * 0.90;
-        }
-        return price;
-    };
-
-    public double applyDiscount(String category, double price) {
-        return calculateDiscount.apply(category, price);
     }
 
 
@@ -59,6 +41,13 @@ public class Shop implements ShoppingOperations {
     // Getters and Setters
     public String getShopName() {
         return shopName;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+    public Receipt getReceipt() {
+        return receipt;
     }
 
     public void setShopName(String shopName) {
